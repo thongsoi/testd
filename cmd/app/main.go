@@ -1,31 +1,25 @@
-// main.go
 package main
 
 import (
 	"log"
 	"net/http"
 
-	"github.com/thongsoi/testc/database"
-	"github.com/thongsoi/testc/internal/order"
+	"github.com/thongsoi/testd/internal/service"
+
+	"github.com/thongsoi/testd/internal/repository"
+
+	"github.com/thongsoi/testd/internal/handler"
 )
 
 func main() {
-	// Initialize the database connection
-	err := database.InitDB()
-	if err != nil {
-		log.Fatalf("Failed to initialize database: %v", err)
-	}
-	defer database.CloseDB()
+	repo := &repository.Repository{}
+	service := service.NewService(repo)
+	handler := handler.NewHandler(service)
 
-	// Set up HTTP handlers
-	http.HandleFunc("/form", order.FormHandler)
-	http.HandleFunc("/markets", order.GetMarketsHandler)
-	http.HandleFunc("/products", order.GetProductsHandler)
-	http.HandleFunc("/submit", order.SubmitOrderHandler)
+	http.HandleFunc("/markets", handler.GetMarkets)
+	http.HandleFunc("/submarkets", handler.GetSubmarkets)
+	http.HandleFunc("/submit-order", handler.SubmitOrder)
 
-	// Start the HTTP server
-	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
-	}
+	log.Println("Server started on :8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
