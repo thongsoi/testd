@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"strconv"
 
@@ -11,6 +12,14 @@ import (
 
 type Handler struct {
 	service *service.Service
+}
+
+func OrderHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/order.html"))
+	tmpl.Execute(w, r)
+
+	// Redirect to login page
+	//http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func NewHandler(service *service.Service) *Handler {

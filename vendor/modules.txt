@@ -6,10 +6,3 @@ github.com/joho/godotenv
 github.com/lib/pq
 github.com/lib/pq/oid
 github.com/lib/pq/scram
-# github.com/shopspring/decimal v1.4.0
-## explicit; go 1.10
-github.com/shopspring/decimal
-# github.com/thongsoi/testc v0.0.0-20241019050353-bb556b3906ae
-## explicit; go 1.23.2
-github.com/thongsoi/testc/database
-github.com/thongsoi/testc/internal/order
